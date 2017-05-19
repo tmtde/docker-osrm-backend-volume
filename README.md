@@ -1,4 +1,4 @@
-Extends the official [osrm-backend](https://hub.docker.com/r/osrm/osrm-backend/) volume definition ready to run at cycle.io.
+Extends the official [osrm-backend](https://hub.docker.com/r/osrm/osrm-backend/) with a volume definition ready to run at cycle.io.
 
 Running
 -------
