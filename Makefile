@@ -22,7 +22,7 @@ endif
 build:
 	docker build --rm -t $(IMAGE_NAME) .
 	
-clean: clean-map
+clean: map-clean
 	test $$(docker image list | grep -c $(IMAGE_NAME)) -gt 0  && docker image rm $(IMAGE_NAME) || true
 
 run:
@@ -32,28 +32,28 @@ shell:
 	docker run --rm -it --entrypoint sh $(IMAGE_NAME) -l
 	
 # Remove old artefacts from map build
-clean-map:
+map-clean:
 	rm -f $$(pwd)/data/*.osm.pbf $$(pwd)/data/*.osrm*
 	
-build-map: fetch-map extract-map contract-map
+map-build: map-fetch map-extract map-contract
 
 # Fetch latest map
-fetch-map:
+map-fetch:
 	mkdir -p $$(pwd)/data/
 	[ -f $$(pwd)/data/$(MAP_FILE) ] || wget $(MAP_URL)/$(MAP_FILE) -O $$(pwd)/data/$(MAP_FILE)
 
 # Extract the map
-extract-map: fetch-map
+map-extract: map-fetch
 	@echo "Running osrm-extract..."
 	[ -f /data/$$(basename $(MAP_FILE) .osm.pbf).osrm ] || $(OSRM_EXTRACT) -p /opt/car.lua /data/$(MAP_FILE)
 
 # Contract the map
-contract-map: extract-map
+map-contract: map-extract
 	@echo "Running osrm-contract..."
 	$(OSRM_CONTRACT) /data/$$(basename $(MAP_FILE) .osm.pbf).osrm
 
 # Trigger build test and (re-)build a map
-test: build-test clean-map build-map
+test: build-test map-clean map-build
 
 # Test if the docker images is build and osrm-routed works as expected
 build-test: build
