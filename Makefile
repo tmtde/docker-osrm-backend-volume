@@ -52,6 +52,13 @@ map-contract: map-extract
 	@echo "Running osrm-contract..."
 	$(OSRM_CONTRACT) /data/$$(basename $(MAP_FILE) .osm.pbf).osrm
 
+# Deploy the maps
+map-deploy: map-contract
+	@echo "Deloying osrm maps of $(MAP_LOCATION) based on data from $(MAP_LATEST)..."
+	@echo "Needs to be implemented. :("; exit 1
+	# TODO - Those credentials needs to be keeped local (read: secret) and should be idealy done via a CI Pipeline
+	deploy $$(pwd)/data/$$(basename $(MAP_FILE) .osm.pbf).osrm user@remote_sftp
+
 # Trigger build test and (re-)build a map
 test: build-test map-clean map-build
 
