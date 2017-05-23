@@ -1,0 +1,21 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+cache:
+  paths:
+  - data/
+
+before_script:
+   - apk add --no-cache make coreutils wget
+
+build:
+  stage: build
+  tags:
+  - dind
+  script:
+    - make map-clean
+    - make map-fetch
+    - make map-extract
+    - make map-contract
