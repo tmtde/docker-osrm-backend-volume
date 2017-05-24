@@ -1,7 +1,8 @@
 IMAGE_NAME := tmtde/osrm-backend-volume
+OSRM_BASE_IMAGE := osrm/osrm-backend
 
-OSRM_EXTRACT := docker run -t -v $$(pwd)/data:/data osrm/osrm-backend osrm-extract
-OSRM_CONTRACT := docker run -t -v $$(pwd)/data:/data osrm/osrm-backend osrm-contract
+OSRM_EXTRACT := docker run -t -v $$(pwd)/data:/data $(OSRM_BASE_IMAGE) osrm-extract
+OSRM_CONTRACT := docker run -t -v $$(pwd)/data:/data $(OSRM_BASE_IMAGE) osrm-contract
 MAP_URL := http://download.geofabrik.de/europe/germany
 # Latest map filename has date of yesterday
 MAP_LATEST := $(shell date --date yesterday "+%y%m%d")
