@@ -41,7 +41,7 @@ map-build: map-fetch map-extract map-contract
 # Fetch latest map
 map-fetch:
 	mkdir -p $$(pwd)/data/
-	[ -f $$(pwd)/data/$(MAP_FILE) ] || wget $(MAP_URL)/$(MAP_FILE) -O $$(pwd)/data/$(MAP_FILE)
+	[ -f $$(pwd)/data/$(MAP_FILE) ] || wget -4 $(MAP_URL)/$(MAP_FILE) -O $$(pwd)/data/$(MAP_FILE)
 
 # Extract the map
 map-extract: map-fetch
